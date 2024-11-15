@@ -1,0 +1,3 @@
+[submodule "alx-react-app-new"]
+	path = alx-react-app-new
+	url = https://github.com/manuel1236/alx-fe-reactjs.git
