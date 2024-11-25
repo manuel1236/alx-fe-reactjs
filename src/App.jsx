@@ -3,7 +3,8 @@ import Header from './component/Header';
 import MainContent from './component/MainContent';
 import Footer from './component/Footer';
 import WelcomeMessage from './component/WelcomeMessage';
-import UserProfile from './component/UserProfile'; // Import UserProfile
+import UserProfile from './components/UserProfile'; // Import UserProfile
+import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
@@ -15,7 +16,7 @@ function App() {
     <>
         <Header />
         <MainContent />
-        <UserProfile name="Alice" age="25" bio="Loves hiking and photography" /> Use UserProfile here
+        <UserProfile name="Alice" age="25" bio="Loves hiking and photography" /> {/* Use UserProfile here */}
         <Footer />
         <WelcomeMessage /> {/* Including WelcomeMessage here */}
       <div>
