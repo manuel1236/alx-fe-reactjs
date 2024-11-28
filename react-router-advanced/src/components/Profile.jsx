@@ -1,17 +1,26 @@
-import { Routes, Route, Link, Outlet } from 'react-router-dom';
-import Details from './Details';
-import Settings from './Settings';
+import { NavLink, Outlet } from 'react-router-dom';
 
 const Profile = () => {
   return (
     <div>
       <h1>Profile Page</h1>
       <nav>
-      <Link to="details" activeClassName="active-link">Profile Details</Link> 
-      <Link to="settings" activeClassName="active-link">Profile Settings</Link>
+        <NavLink
+          to="details"
+          className={({ isActive }) => (isActive ? 'active-link' : '')}
+        >
+          Profile Details
+        </NavLink>{' '}
+        |{' '}
+        <NavLink
+          to="settings"
+          className={({ isActive }) => (isActive ? 'active-link' : '')}
+        >
+          Profile Settings
+        </NavLink>
       </nav>
 
-      {/* Outlet for future nested routes */}
+      {/* Outlet for nested routes */}
       <Outlet />
     </div>
   );

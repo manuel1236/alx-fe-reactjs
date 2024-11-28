@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Profile from './components/Profile';
 import BlogPost from './components/BlogPost';
 import ProtectedRoute from './components/ProtectedRoute';
-import Details from './components/Details';
-import Settings from './components/Settings';
+import ProfileDetails from './components/ProfileDetails';
+import ProfileSettings from './components/ProfileSettings';
 
 function App() {
   const isAuthenticated = false; // Replace with real authentication logic
@@ -23,8 +23,8 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="details" element={<Details />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="details" element={<ProfileDetails />} />
+          <Route path="settings" element={<ProfileSettings />} />
         </Route>
 
         {/* Dynamic Blog Route */}
