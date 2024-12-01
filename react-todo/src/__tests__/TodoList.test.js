@@ -1,8 +1,6 @@
-// src/__tests__/TodoList.test.js
-
-import React from 'react';  // Add this line
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import TodoList from '../TodoList';  // Adjust the path as necessary
+import TodoList from '../components/TodoList';
 
 describe('TodoList Component', () => {
   it('renders the TodoList component', () => {
@@ -30,7 +28,8 @@ describe('TodoList Component', () => {
     const todoItem = screen.getByText('Learn React');
     fireEvent.click(todoItem);
 
-    expect(todoItem).toHaveStyle('text-decoration: line-through');
+    // Update this line based on your toggle implementation
+    expect(todoItem).toHaveClass('completed'); // Adjust if your toggle uses a specific class
   });
 
   it('allows a user to delete a todo item', () => {
