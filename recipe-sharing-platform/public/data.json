@@ -1,0 +1,30 @@
+[
+    {
+      "id": 1,
+      "title": "Spaghetti Carbonara",
+      "summary": "A classic Italian pasta dish.",
+      "image": "https://via.placeholder.com/150",
+      "ingredients": [
+        "200g spaghetti",
+        "2 eggs",
+        "100g pancetta",
+        "50g Parmesan cheese",
+        "Salt and pepper"
+      ],
+      "instructions": "Cook spaghetti. In a bowl, mix eggs and cheese. Fry pancetta. Combine all ingredients and serve."
+    },
+    {
+      "id": 2,
+      "title": "Chicken Tikka Masala",
+      "summary": "Chunks of grilled chicken in a creamy tomato gravy.",
+      "image": "https://via.placeholder.com/150",
+      "ingredients": [
+        "500g chicken",
+        "200g yogurt",
+        "2 onions",
+        "400g tomatoes",
+        "Spices"
+      ],
+      "instructions": "Marinate chicken in yogurt and spices. Grill chicken. Cook onions and tomatoes with spices to make gravy. Combine and serve."
+    }
+  ]
