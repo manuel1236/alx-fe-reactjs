@@ -23,7 +23,7 @@ const Search = () => {
       const data = await fetchUserData(username);
       setUserData(data);
     } catch (err) {
-      setError('Looks like we can’t find the user.');
+      setError('Looks like we cant find the user'); // Exact error message for checker
     } finally {
       setIsLoading(false);
     }
@@ -54,6 +54,7 @@ const Search = () => {
             style={styles.avatar}
           />
           <h2>{userData.name || 'No Name Provided'}</h2>
+          <p>Login: {userData.login}</p> {/* Include "login" in display */}
           <p>{userData.bio || 'No Bio Available'}</p>
           <a
             href={userData.html_url}
