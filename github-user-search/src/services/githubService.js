@@ -1,18 +1,18 @@
-// src/services/githubService.js
 import axios from 'axios';
 
-const githubApi = axios.create({
-  baseURL: 'https://api.github.com',
+const apiClient = axios.create({
+  baseURL: 'https://api.github.com/search/users',
 });
 
-export const fetchUserData = async (username) => {
-  if (!username) throw new Error('Username is required');
+export const fetchUserData = async (username, location = '', minRepos = '', page = 1) => {
+  let query = `q=${username}`;
+  if (location) query += `+location:${location}`;
+  if (minRepos) query += `+repos:>${minRepos}`;
 
   try {
-    const response = await githubApi.get(`/users/${username}`);
+    const response = await apiClient.get(`?${query}&page=${page}&per_page=30`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching user data:', error);
-    throw new Error('Unable to fetch user data');
+    throw new Error('Unable to fetch data');
   }
 };
