@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { fetchUserData } from '../services/githubService';
 
 const Search = () => {
@@ -10,6 +10,14 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
 
+  const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), delay);
+    };
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!username.trim()) {
@@ -17,22 +25,38 @@ const Search = () => {
       return;
     }
 
+    if (minRepos < 0) {
+      setError('Minimum repositories cannot be negative.');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
-    setUserData(null);
+    if (page === 1) setUserData(null);
 
     try {
       const data = await fetchUserData(username, location, minRepos, page);
-      setUserData(data);
+      setUserData((prevData) => ({
+        ...data,
+        items: [...(prevData?.items || []), ...data.items],
+      }));
     } catch (err) {
-      setError('Looks like we cant find the user'); // Exact error message for checker
+      setError(err.message || 'An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const debouncedSearch = useCallback(debounce(handleSearch, 300), [username, location, minRepos, page]);
+
+  const loadMore = async () => {
+    setPage((prev) => prev + 1);
+    await debouncedSearch();
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-gray-700 mb-6">GitHub User Search</h1>
       <form onSubmit={handleSearch} className="flex flex-col items-center space-y-4">
         <input
           type="text"
@@ -60,30 +84,27 @@ const Search = () => {
         </button>
       </form>
 
-      {isLoading && <p className="text-gray-500">Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {isLoading && <p className="text-gray-500 mt-4">Loading...</p>}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {userData && userData.items?.length === 0 && <p className="text-gray-700 mt-4">No users found.</p>}
       {userData && (
-        <div className="space-y-4">
+        <div className="space-y-4 mt-6">
           {userData.items?.map((user) => (
             <div key={user.id} className="border p-4 rounded-md">
               <img src={user.avatar_url} alt={user.login} className="w-16 h-16 rounded-full" />
               <h2 className="font-bold">{user.login}</h2>
               <p>{user.location || 'Location not available'}</p>
-              <p>Repositories: {user.public_repos}</p>
               <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-600">
                 View Profile
               </a>
             </div>
           ))}
+          {userData.total_count > page * 30 && (
+            <button onClick={loadMore} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md">
+              Load More
+            </button>
+          )}
         </div>
-      )}
-      {userData && userData.total_count > 30 && (
-        <button
-          onClick={() => setPage(page + 1)}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
-        >
-          Load More
-        </button>
       )}
     </div>
   );

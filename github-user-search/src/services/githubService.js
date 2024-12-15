@@ -2,17 +2,21 @@ import axios from 'axios';
 
 const BASE_URL = 'https://api.github.com';
 
-export const fetchUserData = async (query) => {
+export const fetchUserData = async (username, location = '', minRepos = 0, page = 1) => {
   try {
-    // Use the search endpoint for advanced queries
+    let query = `${username}`;
+    if (location) query += ` location:${location}`;
+    if (minRepos > 0) query += ` repos:>${minRepos}`;
+
     const response = await axios.get(`${BASE_URL}/search/users`, {
-      params: {
-        q: query, // Accepts a query string like "location:xyz repos:>10"
-      },
+      params: { q: query, page, per_page: 30 },
     });
-    return response.data.items; // Return the array of users
+
+    return response.data;
   } catch (error) {
-    console.error('Error fetching user data:', error);
-    throw error; // Propagate the error for handling in the caller
+    if (error.response) {
+      throw new Error(error.response.data.message || 'GitHub API Error.');
+    }
+    throw new Error('Network error. Please try again.');
   }
 };
