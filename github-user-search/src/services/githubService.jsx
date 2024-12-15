@@ -1,19 +1,18 @@
 import axios from 'axios';
 
-// Define the exact endpoint URL as expected by the checker
-const BASE_URL = 'https://api.github.com/search/users';
+const BASE_URL = 'https://api.github.com';
 
-export const fetchUserData = async (username, location = '', minRepos = '', page = 1) => {
-  // Build the query string
-  let query = `q=${username}`;
-  if (location) query += `+location:${location}`;
-  if (minRepos) query += `+repos:>${minRepos}`;
-
+export const fetchUserData = async (query) => {
   try {
-    // Make the API request using the exact endpoint format
-    const response = await axios.get(`${BASE_URL}?${query}&page=${page}&per_page=30`);
-    return response.data;
+    // Use the search endpoint for advanced queries
+    const response = await axios.get(`${BASE_URL}/search/users`, {
+      params: {
+        q: query, // Accepts a query string like "location:xyz repos:>10"
+      },
+    });
+    return response.data.items; // Return the array of users
   } catch (error) {
-    throw new Error('Unable to fetch data');
+    console.error('Error fetching user data:', error);
+    throw error; // Propagate the error for handling in the caller
   }
 };
